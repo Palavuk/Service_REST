@@ -1,0 +1,9 @@
+version: "3"
+
+services:
+  main:
+    build: src/
+    ports: 
+      - 8000:8000
+    volumes:
+      - ./data:/usr/app/data
