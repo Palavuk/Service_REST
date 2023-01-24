@@ -60,7 +60,9 @@ def file_work(file_name, response: Response, files: list[UploadFile]):
 
 @app.post("/load/{file_name}")
 def get_file(file_name, response: Response):
+
     file_path = 'data/' + file_name + '.csv'
+    
     if isfile(file_path):
         return FileResponse(file_path)
     else:
