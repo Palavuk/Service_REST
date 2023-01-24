@@ -4,7 +4,7 @@ This service provides simple functional, that may help data-engineers in work
 
 # Start
 
-For start working just type
+For start working just type in cmd
 
       >> docker-compose build
       >> docker-compose up -d
