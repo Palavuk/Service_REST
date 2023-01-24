@@ -6,8 +6,8 @@ This service provides simple functional, that may help data-engineers in work
 
 For start working just type in cmd
 
-      >> docker-compose build
-      >> docker-compose up -d
+       docker-compose build
+       docker-compose up -d
       
 And go to the url in your favorite browser 
 
