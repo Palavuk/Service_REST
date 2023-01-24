@@ -1,4 +1,5 @@
-/__pycache__
+/.pytest_cache
 temp.py
 /data
 /test_files
+/src/__pycache__
