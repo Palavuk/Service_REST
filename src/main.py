@@ -1,12 +1,22 @@
 from fastapi import FastAPI, Body, UploadFile, Response
 from fastapi.responses import FileResponse
 import pandas as pd
-from os import mkdir
-from os.path import isfile, isdir
+import logging
 
 from .datacontrol import find, write_to
 
 app = FastAPI()
+
+@app.on_event('startup')
+def startup_event():
+    logger = logging.getLogger("uvicorn.access")
+    handler = logging.StreamHandler()
+    handler.setFormatter(logging.Formatter("%(asctime)s - %(message)s"))
+    logger.addHandler(handler)
+    logger_error = logging.getLogger("uvicorn.error")
+    er_handler = logging.StreamHandler()
+    er_handler.setFormatter(logging.Formatter("%(asctime)s - %(message)s"))
+    logger_error.addHandler(er_handler)
 
 @app.post("/filter/case_sensitive")
 def function_filter(data = Body()):
