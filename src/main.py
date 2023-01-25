@@ -8,10 +8,15 @@ from .datacontrol import find, write_to
 
 app = FastAPI()
 
+logger = logging.getLogger("uvicorn.access")
+err_logger = logging.getLogger("uvicorn.error")
+
 @app.on_event('startup')
 def startup_event():
-    logger = logging.getLogger("uvicorn.access")
-    err_logger = logging.getLogger("uvicorn.error")
+
+    logger.setLevel('DEBUG')
+    err_logger.setLevel('ERROR')
+
     log_dir = os.environ.get("LOG_DIR")
     if log_dir:
         f = open(f'{log_dir}/access.log', 'w+')
@@ -23,14 +28,17 @@ def startup_event():
     else: 
         handler = logging.StreamHandler()
         err_handler = logging.StreamHandler()
+    
     handler.setFormatter(logging.Formatter("%(asctime)s - %(message)s"))
     err_handler.setFormatter(logging.Formatter("%(asctime)s - %(message)s"))
+    
     logger.addHandler(handler)
     err_logger.addHandler(err_handler)
 
 
 @app.post("/filter/case_sensitive")
 def function_filter(data = Body()):
+    logger.info("POST /filter/case_sensitive")
     
     result = []
     not_interested = []
@@ -51,6 +59,7 @@ def function_filter(data = Body()):
 
 @app.post("/upload/{file_name}")
 def file_work(file_name, response: Response, files: list[UploadFile]):
+    logger.info(f"POST /upload/{file_name}")
     
     wrong_files = []
     for file in files:
@@ -72,6 +81,8 @@ def file_work(file_name, response: Response, files: list[UploadFile]):
 
 @app.post("/load/{file_name}")
 def get_file(file_name, response: Response):
+    logger.info(f"POST /load/{file_name}")
+
     if find(file_name):
         return FileResponse(find(file_name))
     else:
