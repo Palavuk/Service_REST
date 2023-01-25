@@ -4,7 +4,7 @@ import pandas as pd
 import logging
 import os
 
-from .datacontrol import find, write_to
+from .data_control import find, write_to, get_file_path
 
 app = FastAPI()
 
@@ -31,7 +31,7 @@ def startup_event():
     
     handler.setFormatter(logging.Formatter("%(asctime)s - %(message)s"))
     err_handler.setFormatter(logging.Formatter("%(asctime)s - %(message)s"))
-    
+
     logger.addHandler(handler)
     err_logger.addHandler(err_handler)
 
@@ -78,13 +78,15 @@ def file_work(file_name, response: Response, files: list[UploadFile]):
 
     write_to(file_name, df)
 
+    return
+
 
 @app.post("/load/{file_name}")
 def get_file(file_name, response: Response):
     logger.info(f"POST /load/{file_name}")
 
     if find(file_name):
-        return FileResponse(find(file_name))
+        return FileResponse(get_file_path(file_name))
     else:
         response.status_code = 404
         return file_name + '.csv'

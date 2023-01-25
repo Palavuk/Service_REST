@@ -7,7 +7,7 @@ import os
 sys.path.append(os.getcwd()) # for access to /src folder
 
 from src.main import app
-from src.datacontrol import find, data_path
+from src.data_control import find, get_file_path, write_to
 
 client = TestClient(app)
 
@@ -42,15 +42,12 @@ def test_function_filter_fail():
 
 def test_get_file_OK():
 
-    test_file = find('only_for_test')
+    if not find('only_for_test'): 
+        df = pd.DataFrame(data=[[0, '10/11/12'], [1, '12/11/10']], columns=['int_column', 'date_column'])
+        write_to('only_for_test', df)
 
-    if not test_file:
-        test_file = data_path + 'only_for_test.csv'
-        file = open(test_file, 'w+')
-        file.write('a;b')
-        file.write('0;1')
-        file.close()
-
+    test_file = get_file_path('only_for_test')
+    
     response = client.post(
         'load/only_for_test'
     )

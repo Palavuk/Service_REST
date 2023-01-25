@@ -1,24 +1,21 @@
 import os
 import pandas as pd
 
-if not os.path.isdir('data'):
-    os.mkdir('data')
-
 data_path = 'data/' if os.environ.get('DATA_DIR') == None else os.environ.get('DATA_DIR')
 
+def get_file_path(file_name):
+    return data_path + file_name + '.csv'
+
 def find(file_name):
-    if os.path.isfile(data_path + file_name + '.csv'):
-        return data_path + file_name + '.csv'
-    else:
-        return False
+    return bool(os.path.isfile(data_path + file_name + '.csv'))
 
 def write_to(filename, data):
-    path = find(filename)
-    if path:
+    path = get_file_path(filename)
+
+    if find(filename):
         origin = pd.read_csv(path, sep=';')
         data = pd.concat([origin, data], sort=False, axis=0)
     else:
-        path = data_path + filename + '.csv'
         f = open(path, 'w+')
         f.close()
     
