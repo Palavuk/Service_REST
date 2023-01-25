@@ -3,3 +3,5 @@ temp.py
 /data
 /test_files
 /src/__pycache__
+.coverage
+/test/__pycache__

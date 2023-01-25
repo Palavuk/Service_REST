@@ -4,6 +4,8 @@ import pandas as pd
 from os import mkdir
 from os.path import isfile, isdir
 
+from .datacontrol import find, write_to
+
 app = FastAPI()
 
 @app.post("/filter/case_sensitive")
@@ -25,6 +27,7 @@ def function_filter(data = Body()):
     
     return result
 
+
 @app.post("/upload/{file_name}")
 def file_work(file_name, response: Response, files: list[UploadFile]):
     
@@ -43,28 +46,13 @@ def file_work(file_name, response: Response, files: list[UploadFile]):
 
     df = pd.concat(frames, sort=False, axis=0)
 
-    if not isdir('data'):
-        mkdir('data')
+    write_to(file_name, df)
 
-    file_path = 'data/' + file_name + '.csv'
-    try:
-        file = open(file_path, 'r+')
-    except IOError:
-        file = open(file_path, 'w')
-    else:
-        origin = pd.read_csv(file, sep=';')
-        df = pd.concat([origin, df], sort=False, axis=0)
-    file.close()
-    
-    df.to_csv(file_path, sep=';', index=False)
 
 @app.post("/load/{file_name}")
 def get_file(file_name, response: Response):
-
-    file_path = 'data/' + file_name + '.csv'
-    
-    if isfile(file_path):
-        return FileResponse(file_path)
+    if find(file_name):
+        return FileResponse(find(file_name))
     else:
         response.status_code = 404
         return file_name + '.csv'
