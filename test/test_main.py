@@ -30,13 +30,15 @@ def test_function_filter_fail():
     assert response.status_code == 422
 
 '''def test_file_work_OK():
+    _test_upload_file = Path('/usr/src/app/tests/files', 'new-index.json')
     with open(sys.path[0] + '/test_files/test.csv', 'rb') as f:
-        files = {'file': f.read()}
+        #files = {list({'file1.txt': f, 'file2.json': open(sys.path[0] + '/test_files/test.json', 'rb')})}
         #files = {'test.csv': open(sys.path[0] + '/test_files/test.csv', 'rb')}
         response = client.post(
             "/upload/test1",
-            files=files
+            files={'uplooad_file': ('test.csv',  f, 'text/csv')}
         )
+        val = response.json()
         assert response.status_code == 200
 '''
 

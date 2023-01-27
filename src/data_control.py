@@ -1,7 +1,7 @@
 import os
 import pandas as pd
 
-data_path = 'data/' if os.environ.get('DATA_DIR') == None else os.environ.get('DATA_DIR')
+data_path = 'data/' if os.environ.get('DATA_DIR') is None else os.environ.get('DATA_DIR')
 
 def get_file_path(file_name):
     return data_path + file_name + '.csv'
