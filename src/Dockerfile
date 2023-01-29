@@ -9,7 +9,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . ./src
 
 RUN mkdir data 
-
 ENV DATA_DIR = '${pwd}/data'
 
 EXPOSE 8000

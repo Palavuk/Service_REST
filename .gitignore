@@ -1,8 +1,11 @@
+
 /.pytest_cache
-temp.py
-/data
-/test_files
 /src/__pycache__
-/src/temp
-.coverage
 /test/__pycache__
+
+/test/test_temp.py
+/src/temp.py
+/temp
+
+.coverage
+/data
