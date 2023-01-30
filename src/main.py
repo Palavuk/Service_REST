@@ -15,14 +15,14 @@ err_logger = logging.getLogger("uvicorn.error")
 def startup_event():
 
     logger.setLevel('DEBUG')
-    err_logger.setLevel('ERROR')
+    #err_logger.setLevel('ERROR')
 
     log_dir = os.environ.get("LOG_DIR")
     if log_dir:
-        f = open(f'{log_dir}/access.log', 'w+')
+        f = open(f'{log_dir}/access.log', 'a+')
         f.close()
         handler = logging.FileHandler(f'{log_dir}/access.log')
-        f = open(f'{log_dir}/error.log', 'w+')
+        f = open(f'{log_dir}/error.log', 'a+')
         f.close()
         err_handler = logging.FileHandler(f'{log_dir}/error.log')
     else: 
@@ -30,7 +30,7 @@ def startup_event():
         err_handler = logging.StreamHandler()
     
     handler.setFormatter(logging.Formatter("%(asctime)s - %(message)s"))
-    err_handler.setFormatter(logging.Formatter("%(asctime)s - %(message)s"))
+    err_handler.setFormatter(logging.Formatter("%(asctime)s - %(levelname)s -%(message)s"))
 
     logger.addHandler(handler)
     err_logger.addHandler(err_handler)
@@ -38,7 +38,7 @@ def startup_event():
 
 @app.post("/filter/case_sensitive")
 def function_filter(data = Body()):
-    logger.info("POST /filter/case_sensitive")
+    #logger.info('POST /filter/case_sensitive',)
     
     result = []
     not_interested = []
@@ -59,7 +59,7 @@ def function_filter(data = Body()):
 
 @app.post("/upload/{file_name}")
 def file_work(file_name, response: Response, files: list[UploadFile]):
-    logger.info(f"POST /upload/{file_name}")
+    #logger.info('POST /upload/%s', file_name)
     
     wrong_files = []
     for file in files:
@@ -83,10 +83,10 @@ def file_work(file_name, response: Response, files: list[UploadFile]):
 
 @app.post("/load/{file_name}")
 def get_file(file_name, response: Response):
-    logger.info(f"POST /load/{file_name}")
+    #logger.info('POST /load/%s', file_name)
 
     if find(file_name):
-        return FileResponse(get_file_path(file_name))
+        return FileResponse(get_file_path(file_name), filename=f'{file_name}.csv', media_type='text/csv')
     else:
         response.status_code = 404
         return file_name + '.csv'
