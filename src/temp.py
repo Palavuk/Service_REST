@@ -17,8 +17,8 @@ engine = create_engine(URL.create(**DATABASE))
 
 engine.connect()
     
-Session = sessionmaker(bind = engine)
-session = Session()
+#Session = sessionmaker(bind = engine)
+#session = Session()
 
 def get_file_path(file_name):
     if not os.path.isdir('temp'):
@@ -39,3 +39,8 @@ def write_to(filename, data):
         data = pd.concat([origin, data], sort=False, axis=0)
     data.to_sql(filename, con=engine, if_exists='replace', index=False)
 
+def remove_file(file_name):
+    engine.execute(f'DROP TABLE IF EXISTS {file_name};')
+
+def get_data(file_name):
+    return pd.read_sql(f'SELECT * FROM only_for_test', con = engine)

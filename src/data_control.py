@@ -9,10 +9,10 @@ def get_file_path(file_name):
 def find(file_name):
     return bool(os.path.isfile(data_path + file_name + '.csv'))
 
-def write_to(filename, data):
-    path = get_file_path(filename)
+def write_to(file_name, data):
+    path = get_file_path(file_name)
 
-    if find(filename):
+    if find(file_name):
         origin = pd.read_csv(path, sep=';')
         data = pd.concat([origin, data], sort=False, axis=0)
     else:
@@ -20,3 +20,10 @@ def write_to(filename, data):
         f.close()
     
     data.to_csv(path, sep=';', index=False)
+
+def get_data(file_name):
+    path = get_file_path(file_name)
+    return pd.read_csv(path, sep=';')
+
+def remove_file(file_name):
+    os.remove(get_file_path(file_name))

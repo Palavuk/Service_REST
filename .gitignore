@@ -3,9 +3,10 @@
 /src/__pycache__
 /test/__pycache__
 
-#/test/test_temp.py
-#/src/temp.py
+/test/test_temp.py
+/src/temp.py
 /temp
 
 .coverage
 /data
+
