@@ -3,6 +3,7 @@ from fastapi.responses import FileResponse
 import pandas as pd
 import logging
 import os
+from pathlib import Path
 
 from .data_control import find, write_to, get_file_path
 
@@ -19,11 +20,9 @@ def startup_event():
 
     log_dir = os.environ.get("LOG_DIR")
     if log_dir:
-        f = open(f'{log_dir}/access.log', 'a+')
-        f.close()
+        Path(f'{log_dir}/access.log').touch(exist_ok=True)
         handler = logging.FileHandler(f'{log_dir}/access.log')
-        f = open(f'{log_dir}/error.log', 'a+')
-        f.close()
+        Path(f'{log_dir}/error.log').touch(exist_ok=True)
         err_handler = logging.FileHandler(f'{log_dir}/error.log')
     else: 
         handler = logging.StreamHandler()
