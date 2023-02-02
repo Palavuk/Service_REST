@@ -1,9 +1,19 @@
 version: "3"
 
 services:
+  
   server:
     build: src/
     ports: 
       - 8000:8000
     volumes:
       - ./data:/usr/app/data
+  
+  data-base:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: "Service-IBS"
+      POSTGRES_USER: "Server"
+      POSTGRES_PASSWORD: "gfhjkm"
+    ports:
+      - 5432:5432

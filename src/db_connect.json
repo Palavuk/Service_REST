@@ -3,8 +3,8 @@
         "drivername": "postgresql+psycopg2", 
         "host": "localhost",
         "port": "5432",
-        "username": "postgres",
+        "username": "Server",
         "password": "gfhjkm",
-        "database": "postgres"
+        "database": "Service-IBS"
     }
 }
