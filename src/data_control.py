@@ -21,6 +21,7 @@ class Controller():
                 try:
                     self.engine = create_engine(URL.create(**(json.load(settings)['DATABASE'])))
                     self.engine.connect()
+                    self.data_path = 'temp/'
                     self.filesystem = False
                 except OperationalError:
                     self.data_path = 'data/'
