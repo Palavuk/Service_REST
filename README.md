@@ -4,13 +4,13 @@ This service provides simple functional, that may help data-engineers in work
 
 # Start
 
-## In Windows native:
+## In VS Code native:
 
-Just run script start.py, for it open project directory in cmd fnd type:
+Manage environment variables in launch.json and run project as usual interface or hot-keys
 
-       python start.py
-       
-This method assumes that the local machine has installed fastapi, pandas, python-multipart and "uvicorn[standard]" packages
+And go to this url in your favorite browser 
+
+    localhost:8080/docs
 
 ## In docker container:
 
@@ -19,6 +19,4 @@ For start working just type in cmd
        docker-compose build
        docker-compose up -d
       
-And go to this url in your favorite browser 
-
-    localhost:8080/docs
+Service will mount on local host like in vscode launch

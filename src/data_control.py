@@ -1,5 +1,6 @@
 import os
 import pandas as pd
+from pathlib import Path
 
 data_path = 'data/' if os.environ.get('DATA_DIR') is None else os.environ.get('DATA_DIR')
 
@@ -16,8 +17,7 @@ def write_to(file_name, data):
         origin = pd.read_csv(path, sep=';')
         data = pd.concat([origin, data], sort=False, axis=0)
     else:
-        f = open(path, 'w+')
-        f.close()
+        Path(path).touch(exist_ok=True)
     
     data.to_csv(path, sep=';', index=False)
 

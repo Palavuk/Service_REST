@@ -5,9 +5,9 @@
 
 /test/test_temp.py
 /src/temp.py
-/temp
 
+start.py
 .coverage
 /data
-
 /logs
+/temp

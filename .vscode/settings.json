@@ -1,5 +1,7 @@
 {
     "python.testing.pytestArgs": [
+        "-v",
+        "--cov",
         "test"
     ],
     "python.testing.unittestEnabled": false,
