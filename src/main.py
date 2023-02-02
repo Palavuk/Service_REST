@@ -5,15 +5,16 @@ import logging
 import os
 from pathlib import Path
 
-from .data_control import find, write_to, get_file_path
+from .data_control import Controller
 
 app = FastAPI()
 
-logger = logging.getLogger("uvicorn.access")
-err_logger = logging.getLogger("uvicorn.error")
+con = Controller()
 
 @app.on_event('startup')
 def startup_event():
+    logger = logging.getLogger("uvicorn.access")
+    err_logger = logging.getLogger("uvicorn.error")
 
     logger.setLevel('DEBUG')
     #err_logger.setLevel('ERROR')
@@ -75,7 +76,7 @@ def file_work(file_name, response: Response, files: list[UploadFile]):
 
     df = pd.concat(frames, sort=False, axis=0)
 
-    write_to(file_name, df)
+    con.write_to(file_name, df)
 
     return
 
@@ -84,8 +85,8 @@ def file_work(file_name, response: Response, files: list[UploadFile]):
 def get_file(file_name, response: Response):
     #logger.info('POST /load/%s', file_name)
 
-    if find(file_name):
-        return FileResponse(get_file_path(file_name), filename=f'{file_name}.csv', media_type='text/csv')
+    if con.find(file_name):
+        return FileResponse(con.get_file_path(file_name), filename=f'{file_name}.csv', media_type='text/csv')
     else:
         response.status_code = 404
         return file_name + '.csv'

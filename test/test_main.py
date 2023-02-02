@@ -7,9 +7,11 @@ import os
 sys.path.append(os.getcwd()) # for access to /src folder
 
 from src.main import app
-from src.data_control import find, get_file_path, write_to
+from src.data_control import Controller
 
 client = TestClient(app)
+
+con = Controller()
 
 def test_function_filter_OK():
     response = client.post(
@@ -43,11 +45,11 @@ def test_function_filter_fail():
 
 def test_get_file_OK():
 
-    if not find('only_for_test'): 
+    if not con.find('only_for_test'): 
         df = pd.DataFrame(data=[[0, '10/11/12'], [1, '12/11/10']], columns=['int_column', 'date_column'])
-        write_to('only_for_test', df)
+        con.write_to('only_for_test', df)
 
-    test_file = get_file_path('only_for_test')
+    test_file = con.get_file_path('only_for_test')
     
     response = client.post(
         'load/only_for_test'
