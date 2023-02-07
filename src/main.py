@@ -61,6 +61,10 @@ def function_filter(data = Body()):
 def file_work(file_name, response: Response, files: list[UploadFile]):
     #logger.info('POST /upload/%s', file_name)
     
+    if file_name == 'statistics':
+        response.status_code = 403
+        return
+
     wrong_files = []
     for file in files:
         if file.filename.split('.')[-1] not in ['json', 'csv']: wrong_files.append(file.filename)
