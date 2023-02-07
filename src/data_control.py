@@ -24,10 +24,11 @@ class Controller():
                     self.data_path = 'temp/'
                     self.filesystem = False
                 except OperationalError:
+                    if not os.path.isdir('data'): os.mkdir('data')
                     self.data_path = 'data/'
                     self.filesystem = True
 
-    def get_file_path(self, file_name):
+    def get_file_path(self, file_name) -> str:
         if self.filesystem:
             return self.data_path + file_name + '.csv'
         else:
@@ -39,14 +40,14 @@ class Controller():
             df.to_csv(path, sep=';', index=False)
             return path
 
-    def find(self, file_name):
+    def find(self, file_name) -> bool:
         if self.filesystem:
             return bool(os.path.isfile(self.data_path + file_name + '.csv'))
         else:
             insp = inspect(self.engine)
             return insp.has_table(file_name)
 
-    def write_to(self, file_name, data):
+    def write_to(self, file_name, data) -> None:
         if self.filesystem:
             path = self.get_file_path(file_name)
 
@@ -63,13 +64,13 @@ class Controller():
                 data = pd.concat([origin, data], sort=False, axis=0)
             data.to_sql(file_name, con=self.engine, if_exists='replace', index=False)
 
-    def remove_file(self, file_name):
+    def remove_file(self, file_name) -> None:
         if self.filesystem:
             os.remove(self.get_file_path(file_name))
         else:
             self.engine.execute(f'DROP TABLE IF EXISTS {file_name};')
     
-    def get_data(self, file_name):
+    def get_data(self, file_name) -> pd.DataFrame:
         if self.filesystem:
             return pd.read_csv(self.get_file_path(file_name), sep=';')
         else:
