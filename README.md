@@ -1,4 +1,4 @@
-# Service_IBS
+# Service_REST
 
 This service provides simple functional, that may help data-engineers in work
 
